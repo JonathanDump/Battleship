@@ -10,8 +10,7 @@ export function Ship(length) {
       this.hitCount += 1;
     },
     isSunk() {
-      this.sunk = this.getLength() === this.hitCount ? true : false;
-      return this.sunk;
+      return (this.sunk = this.getLength() === this.hitCount ? true : false);
     },
   };
 }

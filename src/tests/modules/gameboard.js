@@ -1,3 +1,5 @@
+import { Ship } from './ship.js';
+
 export function Gameboard() {
   const board = createBoard();
   const hits = new Set();
@@ -16,6 +18,9 @@ export function Gameboard() {
 
   return {
     ships,
+    getRandomCoords() {
+      return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
+    },
     getBoard() {
       return board;
     },
@@ -24,8 +29,19 @@ export function Gameboard() {
       let newY = coords[1] - 1;
       let count = 0;
       const areaLength = (ship.getLength() + 2) * 3;
+      const shipEndX = coords[1] + ship.getLength();
+      const shipEndY = coords[0] + ship.getLength();
 
       if (isHorizontal) {
+        if (
+          shipEndX > 9 ||
+          board[coords[0]][shipEndX] !== 0 ||
+          board[coords[0]][coords[1]] !== 0
+        ) {
+          console.log('You can`t place here');
+          return false;
+        }
+
         for (let i = 0; i < ship.getLength(); i++) {
           board[coords[0]][coords[1] + i] = ship;
         }
@@ -48,7 +64,16 @@ export function Gameboard() {
             continue;
           }
         }
+        return true;
       } else if (!isHorizontal) {
+        if (
+          shipEndY > 9 ||
+          board[shipEndY][coords[1]] !== 0 ||
+          board[coords[0]][coords[1]] !== 0
+        ) {
+          console.log('You can`t place here');
+          return false;
+        }
         for (let i = 0; i < ship.getLength(); i++) {
           board[coords[0] + i][coords[1]] = ship;
         }
@@ -71,11 +96,14 @@ export function Gameboard() {
             continue;
           }
         }
+        return true;
       }
     },
 
     receiveAttack(coords) {
       const [x, y] = coords;
+      const cell = board[x][y];
+
       if (hits.has(`${x}, ${y}`)) {
         return console.log('choose another coordinates');
       }
@@ -86,7 +114,7 @@ export function Gameboard() {
         board[x][y].hit();
         board[x][y] = 'x';
 
-        if (board[x][y].isSunk()) {
+        if (cell.isSunk()) {
           ships--;
         }
       } else {
@@ -97,5 +125,22 @@ export function Gameboard() {
         alert('game over');
       }
     },
+    placeRandomShip() {
+      const lengths = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
+      const ships = lengths.map((l) => Ship(l));
+
+      let successfulPlacement = 0;
+
+      while (successfulPlacement < lengths.length) {
+        const coords = this.getRandomCoords();
+        const isHorizontal = Math.random() < 0.5;
+
+        if (this.placeShip(ships[successfulPlacement], coords, isHorizontal)) {
+          successfulPlacement++;
+        }
+      }
+    },
   };
 }
+
+console.log('fdg');

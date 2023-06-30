@@ -1,17 +1,9 @@
 import './index.html';
 import './scss/index.scss';
-import { Gameboard } from './tests/modules/gameboard';
-import { Ship } from './tests/modules/ship';
+import { Gameboard } from './tests/modules/gameboard.js';
 
-const gameBoard = Gameboard();
+const gameboard = Gameboard();
 
-// gameBoard.placeShip(Ship(4), [0, 1], true);
-// console.log(gameBoard.getBoard());
+gameboard.placeRandomShip();
 
-const ship = Ship(3);
-
-gameBoard.placeShip(ship, [0, 1], true);
-
-gameBoard.receiveAttack([0, 1]);
-console.log(gameBoard.getBoard());
-console.log(ship.hitCount);
+console.table(gameboard.getBoard());
