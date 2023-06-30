@@ -79,15 +79,22 @@ export function Gameboard() {
       if (hits.has(`${x}, ${y}`)) {
         return console.log('choose another coordinates');
       }
+
       hits.add(`${x}, ${y}`);
+
       if (typeof board[x][y] === 'object') {
         board[x][y].hit();
         board[x][y] = 'x';
-        if (board[x][y].isSunk) {
+
+        if (board[x][y].isSunk()) {
           ships--;
         }
       } else {
         board[x][y] = '*';
+      }
+
+      if (ships === 0) {
+        alert('game over');
       }
     },
   };
