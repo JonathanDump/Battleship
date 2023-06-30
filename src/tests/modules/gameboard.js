@@ -1,5 +1,7 @@
 export function Gameboard() {
   const board = createBoard();
+  const hits = new Set();
+  let ships = 10;
 
   function createBoard() {
     let board = [];
@@ -12,12 +14,11 @@ export function Gameboard() {
     return board;
   }
 
-  function getBoard() {
-    return board;
-  }
-
   return {
-    getBoard,
+    ships,
+    getBoard() {
+      return board;
+    },
     placeShip(ship, coords, isHorizontal) {
       let newX = coords[0] - 1;
       let newY = coords[1] - 1;
@@ -70,6 +71,23 @@ export function Gameboard() {
             continue;
           }
         }
+      }
+    },
+
+    receiveAttack(coords) {
+      const [x, y] = coords;
+      if (hits.has(`${x}, ${y}`)) {
+        return console.log('choose another coordinates');
+      }
+      hits.add(`${x}, ${y}`);
+      if (typeof board[x][y] === 'object') {
+        board[x][y].hit();
+        board[x][y] = 'x';
+        if (board[x][y].isSunk) {
+          ships--;
+        }
+      } else {
+        board[x][y] = '*';
       }
     },
   };
