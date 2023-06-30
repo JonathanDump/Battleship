@@ -1,5 +1,6 @@
 export function Ship(length) {
   return {
+    length,
     hitCount: 0,
     sunk: false,
     getLength() {
@@ -10,6 +11,7 @@ export function Ship(length) {
     },
     isSunk() {
       this.sunk = this.getLength() === this.hitCount ? true : false;
+      return this.sunk;
     },
   };
 }
