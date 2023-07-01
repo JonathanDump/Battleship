@@ -50,7 +50,8 @@ describe('gameboard', () => {
   it('ship gets a hit', () => {
     gameboard.placeShip(ship, coords, direction);
     gameboard.receiveAttack(coords);
-    const resBoard =[ [-1, 'x', ship, ship, -1, 0, 0, 0, 0, 0],
+    const resBoard = [
+      [-1, 'x', ship, ship, -1, 0, 0, 0, 0, 0],
       [-1, -1, -1, -1, -1, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -63,5 +64,10 @@ describe('gameboard', () => {
     ];
     expect(ship.hitCount).toEqual(1);
     expect(gameboard.getBoard()).toEqual(resBoard);
+  });
+
+  it('successful random ship placement', () => {
+    gameboard.placeRandomShips();
+    expect(gameboard.isShipsPlacedSuccessful()).toBe(true)
   });
 });
