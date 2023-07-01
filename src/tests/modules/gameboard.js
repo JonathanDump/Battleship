@@ -1,15 +1,16 @@
 import { Ship } from './ship.js';
 
 export function Gameboard() {
+  const SIZE = 10;
   const board = createBoard();
-  const hits = new Set();
-  let ships = 10;
+  let gameOver = false;
+  let ships = 0;
 
   function createBoard() {
     let board = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < SIZE; i++) {
       board[i] = [];
-      for (let k = 0; k < 10; k++) {
+      for (let k = 0; k < SIZE; k++) {
         board[i].push(0);
       }
     }
@@ -18,6 +19,7 @@ export function Gameboard() {
 
   return {
     ships,
+    gameOver,
     getRandomCoords() {
       return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
     },
@@ -44,6 +46,7 @@ export function Gameboard() {
 
         for (let i = 0; i < ship.getLength(); i++) {
           board[coords[0]][coords[1] + i] = ship;
+          this.ships++;
         }
 
         for (let i = 0; i < areaLength; i++) {
@@ -76,6 +79,7 @@ export function Gameboard() {
         }
         for (let i = 0; i < ship.getLength(); i++) {
           board[coords[0] + i][coords[1]] = ship;
+          this.ships++;
         }
 
         for (let i = 0; i < areaLength; i++) {
@@ -104,12 +108,6 @@ export function Gameboard() {
       const [x, y] = coords;
       const cell = board[x][y];
 
-      if (hits.has(`${x}, ${y}`)) {
-        return console.log('choose another coordinates');
-      }
-
-      hits.add(`${x}, ${y}`);
-
       if (typeof board[x][y] === 'object') {
         board[x][y].hit();
         board[x][y] = 'x';
@@ -122,10 +120,12 @@ export function Gameboard() {
       }
 
       if (ships === 0) {
-        alert('game over');
+        this.gameOver = true;
+        // alert('game over');
+        return true;
       }
     },
-    placeRandomShip() {
+    placeRandomShips() {
       const lengths = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
       const ships = lengths.map((l) => Ship(l));
 
@@ -139,6 +139,19 @@ export function Gameboard() {
           successfulPlacement++;
         }
       }
+    },
+    isShipsPlacedSuccessful() {
+      let count = 0;
+
+      for (let i = 0; i < SIZE; i++) {
+        for (let k = 0; k < SIZE; k++) {
+          if (typeof board[i][k] !== 'object') {
+            count++;
+          }
+        }
+      }
+
+      return count === 80 ? true : false;
     },
   };
 }
