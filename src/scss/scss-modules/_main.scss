@@ -1,0 +1,168 @@
+@import './variables';
+#main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex: 1;
+
+  .main-block {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    // height: 100%;
+    width: 100%;
+
+    .board {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      gap: 8px;
+      // flex: 1;
+
+      &__grid {
+        border: 1px solid $the-darkest;
+        background-color: $the-darkest;
+        height: 300px;
+        width: 300px;
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        grid-template-rows: repeat(10, 1fr);
+        gap: 1px;
+
+        .cell {
+          background-color: $bg-color;
+        }
+      }
+    }
+  }
+
+  .main-block.player {
+    justify-content: flex-end;
+
+    .controls {
+      align-self: flex-start;
+      // flex: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      padding: 32px 0;
+
+      .port {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+
+        .dock {
+          position: relative;
+          border: 1px dotted $the-darkest;
+          display: flex;
+          justify-content: flex-end;
+
+          // height: 30px;
+          // width: 90px;
+
+          &__ship {
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            background-color: rgb(57, 72, 103, 0.5);
+            border: 2px solid $mid-gray;
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+
+          .ship-count {
+            display: inline-block;
+          }
+        }
+
+        .dock.s4 {
+          height: 30px;
+          width: 120px;
+
+          .dock__ship.s4 {
+            height: 30px;
+            width: 120px;
+          }
+        }
+        .dock.s3 {
+          height: 30px;
+          width: 90px;
+
+          .dock__ship.s3 {
+            height: 30px;
+            width: 90px;
+          }
+        }
+        .dock.s2 {
+          height: 30px;
+          width: 60px;
+
+          .dock__ship.s2 {
+            height: 30px;
+            width: 60px;
+          }
+        }
+        .dock.s1 {
+          height: 30px;
+          width: 30px;
+
+          .dock__ship.s1 {
+            height: 30px;
+            width: 30px;
+          }
+        }
+      }
+
+      .buttons {
+        display: flex;
+        width: 100%;
+
+        &-wrap {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          width: 100%;
+
+          &__button {
+            appearance: none;
+            border: none;
+            outline: none;
+            background-color: $light-gray;
+            color: $bg-color;
+            padding: 6px;
+            transition: all 0.1s ease;
+
+            &:hover {
+              background-color: $the-darkest;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.main-block.computer {
+  justify-content: flex-start;
+
+  .board {
+    &__grid {
+      .cell {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

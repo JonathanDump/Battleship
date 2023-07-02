@@ -1,8 +1,8 @@
 import './index.html';
 import './scss/index.scss';
-import { Gameboard } from './tests/modules/gameboard.js';
-import { Player } from './tests/modules/player';
-import { Ship } from './tests/modules/ship';
+import { Gameboard } from './tests/modules/factories/gameboard.js';
+import { Player } from './tests/modules/factories/player';
+import { Ship } from './tests/modules/factories/ship';
 
 const gameboard = Gameboard();
 const player = Player('player');
@@ -57,3 +57,11 @@ for (let i = 0; i < 200; i++) {
 // console.table(player.gameboard.getBoard());
 // console.log(player.gameboard.gameOver);
 // console.table(player.gameboard.getBoard());
+
+const grid = document.querySelector('#grid-player');
+const gridComputer = document.querySelector('#grid-computer');
+
+for (let i = 0; i < 100; i++) {
+  grid.innerHTML += `<div class="cell"></div>`;
+  gridComputer.innerHTML += `<div class="cell"></div>`;
+}

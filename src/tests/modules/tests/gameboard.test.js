@@ -1,5 +1,5 @@
-import { Gameboard } from '../gameboard';
-import { Ship } from '../ship';
+import { Gameboard } from '../factories/gameboard';
+import { Ship } from '../factories/ship';
 
 describe('gameboard', () => {
   let gameboard;
@@ -68,6 +68,6 @@ describe('gameboard', () => {
 
   it('successful random ship placement', () => {
     gameboard.placeRandomShips();
-    expect(gameboard.isShipsPlacedSuccessful()).toBe(true)
+    expect(gameboard.isShipsPlacedSuccessful()).toBe(true);
   });
 });
