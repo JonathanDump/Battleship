@@ -18,6 +18,7 @@ export function Gameboard() {
   }
 
   return {
+    board,
     ships,
     gameOver,
     getRandomCoords() {
@@ -26,7 +27,7 @@ export function Gameboard() {
     getBoard() {
       return board;
     },
-    placeShip(ship, coords, isHorizontal) {
+    placeShip(ship, coords, isHorizontal = true) {
       let newX = coords[0] - 1;
       let newY = coords[1] - 1;
       let count = 0;
@@ -37,17 +38,17 @@ export function Gameboard() {
       if (isHorizontal) {
         if (
           shipEndX > 9 ||
-          board[coords[0]][shipEndX] !== 0 ||
-          board[coords[0]][coords[1]] !== 0
+          this.board[coords[0]][shipEndX] !== 0 ||
+          this.board[coords[0]][coords[1]] !== 0
         ) {
           console.log('You can`t place here');
           return false;
         }
 
         for (let i = 0; i < ship.getLength(); i++) {
-          board[coords[0]][coords[1] + i] = ship;
-          this.ships++;
+          this.board[coords[0]][coords[1] + i] = ship;
         }
+        this.ships++;
 
         for (let i = 0; i < areaLength; i++) {
           if (count > areaLength / 3 - 1) {
@@ -56,8 +57,8 @@ export function Gameboard() {
             newY = coords[1] - 1;
           }
           try {
-            if (board[newX][newY] === 0) {
-              board[newX][newY] = -1;
+            if (this.board[newX][newY] === 0) {
+              this.board[newX][newY] = -1;
             }
             newY++;
             count++;
@@ -71,17 +72,16 @@ export function Gameboard() {
       } else if (!isHorizontal) {
         if (
           shipEndY > 9 ||
-          board[shipEndY][coords[1]] !== 0 ||
-          board[coords[0]][coords[1]] !== 0
+          this.board[shipEndY][coords[1]] !== 0 ||
+          this.board[coords[0]][coords[1]] !== 0
         ) {
           console.log('You can`t place here');
           return false;
         }
         for (let i = 0; i < ship.getLength(); i++) {
-          board[coords[0] + i][coords[1]] = ship;
-          this.ships++;
+          this.board[coords[0] + i][coords[1]] = ship;
         }
-
+        this.ships++;
         for (let i = 0; i < areaLength; i++) {
           if (count > areaLength / 3 - 1) {
             count = 0;
@@ -89,8 +89,8 @@ export function Gameboard() {
             newX = coords[0] - 1;
           }
           try {
-            if (board[newX][newY] === 0) {
-              board[newX][newY] = -1;
+            if (this.board[newX][newY] === 0) {
+              this.board[newX][newY] = -1;
             }
             newX++;
             count++;
@@ -106,21 +106,22 @@ export function Gameboard() {
 
     receiveAttack(coords) {
       const [x, y] = coords;
-      const cell = board[x][y];
+      const cell = this.board[x][y];
 
-      if (typeof board[x][y] === 'object') {
-        board[x][y].hit();
-        board[x][y] = 'x';
+      if (typeof this.board[x][y] === 'object') {
+        this.board[x][y].hit();
+        this.board[x][y] = 'x';
 
         if (cell.isSunk()) {
-          ships--;
+          this.ships--;
         }
       } else {
-        board[x][y] = '*';
+        this.board[x][y] = '*';
       }
 
-      if (ships === 0) {
+      if (this.ships === 0) {
         this.gameOver = true;
+
         // alert('game over');
         return true;
       }
@@ -145,7 +146,7 @@ export function Gameboard() {
 
       for (let i = 0; i < SIZE; i++) {
         for (let k = 0; k < SIZE; k++) {
-          if (typeof board[i][k] !== 'object') {
+          if (typeof this.board[i][k] !== 'object') {
             count++;
           }
         }

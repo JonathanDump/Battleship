@@ -1,10 +1,11 @@
 import { Gameboard } from './gameboard';
 
-export function Player() {
+export function Player(name) {
   const gameboard = Gameboard();
   const hits = new Set();
 
   return {
+    name,
     gameboard,
     hits,
     isAttackPossible(coords) {
