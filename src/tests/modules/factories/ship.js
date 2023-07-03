@@ -3,6 +3,7 @@ export function Ship(length) {
     length,
     hitCount: 0,
     sunk: false,
+    coords: [],
     getLength() {
       return length;
     },

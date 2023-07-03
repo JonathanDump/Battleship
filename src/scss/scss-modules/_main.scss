@@ -33,6 +33,11 @@
 
         .cell {
           background-color: $bg-color;
+          position: relative;
+          transition: all 0.1s ease;
+        }
+        .cell-hit {
+          background-color: $light-gray;
         }
       }
     }
@@ -51,7 +56,7 @@
       justify-content: center;
       align-items: center;
       gap: 16px;
-      padding: 32px 0;
+      padding: 32px 8px;
 
       .port {
         display: flex;
@@ -65,61 +70,33 @@
           display: flex;
           justify-content: flex-end;
 
-          // height: 30px;
-          // width: 90px;
-
-          &__ship {
+          &::after {
+            content: attr(data-amount);
             position: absolute;
-            top: -2px;
-            left: -2px;
-            background-color: rgb(57, 72, 103, 0.5);
-            border: 2px solid $mid-gray;
-
-            &:hover {
-              cursor: pointer;
-            }
+            right: -25px;
           }
 
           .ship-count {
             display: inline-block;
+            pointer-events: none;
           }
         }
 
-        .dock.s4 {
+        .dock.d4 {
           height: 30px;
           width: 120px;
-
-          .dock__ship.s4 {
-            height: 30px;
-            width: 120px;
-          }
         }
-        .dock.s3 {
+        .dock.d3 {
           height: 30px;
           width: 90px;
-
-          .dock__ship.s3 {
-            height: 30px;
-            width: 90px;
-          }
         }
-        .dock.s2 {
+        .dock.d2 {
           height: 30px;
           width: 60px;
-
-          .dock__ship.s2 {
-            height: 30px;
-            width: 60px;
-          }
         }
-        .dock.s1 {
+        .dock.d1 {
           height: 30px;
           width: 30px;
-
-          .dock__ship.s1 {
-            height: 30px;
-            width: 30px;
-          }
         }
       }
 
@@ -161,8 +138,48 @@
       .cell {
         &:hover {
           cursor: pointer;
+          background-color: $cell-hit-gray !important;
         }
       }
     }
   }
+}
+
+.ship {
+  display: flex;
+  position: absolute;
+  // margin: -2px;
+  background-color: rgb(57, 72, 103, 0.5);
+  // border: 1px solid $mid-gray;
+  z-index: 3;
+  box-sizing: border-box;
+
+  > div {
+    z-index: 6;
+    flex: 1;
+    // border: 1px solid red;
+    // border-bottom: 3px solid red;
+    box-sizing: border-box;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.ship.s4 {
+  height: 30px;
+  width: 120px;
+}
+.ship.s3 {
+  height: 30px;
+  width: 90px;
+}
+.ship.s2 {
+  height: 30px;
+  width: 60px;
+}
+.ship.s1 {
+  height: 30px;
+  width: 30px;
 }

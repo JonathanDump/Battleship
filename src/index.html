@@ -13,23 +13,28 @@
       <div id="main" class="main">
         <div class="main-block player">
           <div class="controls">
-            <div class="instruction">Drag and place a ship</div>
+            <div class="instruction">
+              Drag to place a ship <br />and click to rotate
+            </div>
             <div class="port">
-              <div class="dock s4">
-                <div class="dock__ship s4"></div>
-                <span class="ship-count">x1</span>
+              <div class="dock d4" data-amount="x1">
+                <div class="ship s4" draggable="true" data-length="3"></div>
               </div>
-              <div class="dock s3">
-                <div class="dock__ship s3"></div>
-                <span class="ship-count">x2</span>
+              <div class="dock d3" data-amount="x2">
+                <div class="ship s3" draggable="true" data-length="2"></div>
+                <div class="ship s3" draggable="true" data-length="2"></div>
               </div>
-              <div class="dock s2">
-                <div class="dock__ship s2"></div>
-                <span class="ship-count">x3</span>
+              <div class="dock d2" data-amount="x3">
+                <div class="ship s2" draggable="true" data-length="1"></div>
+                <div class="ship s2" draggable="true" data-length="1"></div>
+                <div class="ship s2" draggable="true" data-length="1"></div>
               </div>
-              <div class="dock s1">
-                <div class="dock__ship s1"></div>
-                <span class="ship-count">x4</span>
+              <div class="dock d1" data-amount="x4">
+                <div class="ship s1" draggable="true" data-length="0"></div>
+                <div class="ship s1" draggable="true" data-length="0"></div>
+                <div class="ship s1" draggable="true" data-length="0"></div>
+                <div class="ship s1" draggable="true" data-length="0"></div>
+                <!-- <span class="ship-count">x4</span> -->
               </div>
             </div>
             <div class="buttons">

@@ -32,6 +32,11 @@
 }
 #main .main-block .board__grid .cell {
   background-color: #f1f6f9;
+  position: relative;
+  transition: all 0.1s ease;
+}
+#main .main-block .board__grid .cell-hit {
+  background-color: #9ba4b5;
 }
 #main .main-block.player {
   justify-content: flex-end;
@@ -45,7 +50,7 @@
   justify-content: center;
   align-items: center;
   gap: 16px;
-  padding: 32px 0;
+  padding: 32px 8px;
 }
 #main .main-block.player .controls .port {
   display: flex;
@@ -59,48 +64,28 @@
   display: flex;
   justify-content: flex-end;
 }
-#main .main-block.player .controls .port .dock__ship {
+#main .main-block.player .controls .port .dock::after {
+  content: attr(data-amount);
   position: absolute;
-  top: -2px;
-  left: -2px;
-  background-color: rgba(57, 72, 103, 0.5);
-  border: 2px solid #394867;
-}
-#main .main-block.player .controls .port .dock__ship:hover {
-  cursor: pointer;
+  right: -25px;
 }
 #main .main-block.player .controls .port .dock .ship-count {
   display: inline-block;
+  pointer-events: none;
 }
-#main .main-block.player .controls .port .dock.s4 {
+#main .main-block.player .controls .port .dock.d4 {
   height: 30px;
   width: 120px;
 }
-#main .main-block.player .controls .port .dock.s4 .dock__ship.s4 {
-  height: 30px;
-  width: 120px;
-}
-#main .main-block.player .controls .port .dock.s3 {
+#main .main-block.player .controls .port .dock.d3 {
   height: 30px;
   width: 90px;
 }
-#main .main-block.player .controls .port .dock.s3 .dock__ship.s3 {
-  height: 30px;
-  width: 90px;
-}
-#main .main-block.player .controls .port .dock.s2 {
+#main .main-block.player .controls .port .dock.d2 {
   height: 30px;
   width: 60px;
 }
-#main .main-block.player .controls .port .dock.s2 .dock__ship.s2 {
-  height: 30px;
-  width: 60px;
-}
-#main .main-block.player .controls .port .dock.s1 {
-  height: 30px;
-  width: 30px;
-}
-#main .main-block.player .controls .port .dock.s1 .dock__ship.s1 {
+#main .main-block.player .controls .port .dock.d1 {
   height: 30px;
   width: 30px;
 }
@@ -135,6 +120,43 @@
 }
 .main-block.computer .board__grid .cell:hover {
   cursor: pointer;
+  background-color: rgb(190, 200, 218) !important;
+}
+
+.ship {
+  display: flex;
+  position: absolute;
+  background-color: rgba(57, 72, 103, 0.5);
+  z-index: 3;
+  box-sizing: border-box;
+}
+.ship > div {
+  z-index: 6;
+  flex: 1;
+  box-sizing: border-box;
+}
+.ship:hover {
+  cursor: pointer;
+}
+
+.ship.s4 {
+  height: 30px;
+  width: 120px;
+}
+
+.ship.s3 {
+  height: 30px;
+  width: 90px;
+}
+
+.ship.s2 {
+  height: 30px;
+  width: 60px;
+}
+
+.ship.s1 {
+  height: 30px;
+  width: 30px;
 }
 
 body {
