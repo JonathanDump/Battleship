@@ -50,21 +50,17 @@ export function drag(e) {
 }
 
 export function drop(e) {
+  if (e.target.classList.contains('ship')) {
+    console.log('dsfadfadfadfad');
+    return;
+  }
+  console.log(e.target);
   let itemClass = e.dataTransfer.getData('class');
   const length = +e.dataTransfer.getData('length');
   const coords = [
     +e.target.getAttribute('data-x'),
     +e.target.getAttribute('data-y'),
   ];
-  // const ship = document.querySelector(`.${itemClass}`);
-  // console.log(ship);
-  // const counter = ship.nextElementSibling;
-  // console.log(
-  //   e.dataTransfer
-  //     .getData('prevCoords')
-  //     .split(',')
-  //     .array.forEach((n) => +n)
-  // );
 
   if (player.gameboard.placeShip(Ship(length), coords, true)) {
     e.target.append(document.querySelector(`.${itemClass.replace(/ /g, '.')}`));
@@ -76,5 +72,7 @@ export function drop(e) {
 }
 
 export function toggleHover(e) {
-  e.target.classList.toggle('cell-hit');
+  if (e.target.classList.contains('cell')) {
+    e.target.classList.toggle('cell-hit');
+  }
 }

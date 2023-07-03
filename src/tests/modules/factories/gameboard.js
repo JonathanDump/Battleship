@@ -32,6 +32,7 @@ export function Gameboard() {
       // let newY = coords[1] - 1;
       // let count = 0;
       // const areaLength = (ship.getLength() + 2) * 3;
+      console.log(coords);
       const shipEndX = coords[1] + ship.getLength() - 1;
       const shipEndY = coords[0] + ship.getLength() - 1;
       const endCoordsX = [coords[0], shipEndX];
@@ -117,7 +118,6 @@ export function Gameboard() {
       }
     },
     isPlacementPossible(length, coords, isHorizontal) {
-      console.log(length);
       let offX = coords[0] - 1;
       let offY = coords[1] - 1;
       let count = 0;
@@ -136,8 +136,12 @@ export function Gameboard() {
             offX++;
             offY = coords[1] - 1;
           }
+
           try {
+            // console.log(this.board[offX][offY]);
+            // console.log(offX, offY);
             if (typeof this.board[offX][offY] === 'object') {
+              console.log('1231223412341234');
               return false;
             }
             offY++;

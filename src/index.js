@@ -6,7 +6,6 @@ import {
   drop,
   loadBoards,
   toggleHover,
-  Dom,
 } from './tests/dom/dom-control';
 import { Gameboard } from './tests/modules/factories/gameboard.js';
 import { Player } from './tests/modules/factories/player';
@@ -18,11 +17,11 @@ const ai = Player('ai');
 const ship = Ship(3);
 const ship1 = Ship(2);
 
-gameboard.placeShip(ship, [0, 0], true);
-console.log(gameboard.board);
+// gameboard.placeShip(ship, [0, 0], true);
+// console.table(gameboard.board);
 
-gameboard.removeShip([0, 0]);
-console.log(gameboard.board);
+// gameboard.removeShip([0, 0]);
+// console.log(gameboard.board);
 
 // gameboard.placeShip(ship1, [0, 0], true);
 // console.log(gameboard.board);
