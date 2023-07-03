@@ -44,17 +44,18 @@ export function drag(e) {
     //   +e.target.parentNode.dataset.y,
     // ]);
     player.gameboard.removeShip(coords);
-    console.log(player.gameboard.board);
+    console.log(player.gameboard.board[2][0]);
+    console.table(player.gameboard.board);
   }
 }
 
 export function drop(e) {
   let itemClass = e.dataTransfer.getData('class');
   const length = +e.dataTransfer.getData('length');
-  // const coords = [
-  //   +e.target.getAttribute('data-x'),
-  //   +e.target.getAttribute('data-y'),
-  // ];
+  const coords = [
+    +e.target.getAttribute('data-x'),
+    +e.target.getAttribute('data-y'),
+  ];
   // const ship = document.querySelector(`.${itemClass}`);
   // console.log(ship);
   // const counter = ship.nextElementSibling;
@@ -68,7 +69,7 @@ export function drop(e) {
   if (player.gameboard.placeShip(Ship(length), coords, true)) {
     e.target.append(document.querySelector(`.${itemClass.replace(/ /g, '.')}`));
 
-    console.log(player.gameboard.board[0][0].coords);
+    console.log(player.gameboard.board);
     // console.log(counter);
   }
   toggleHover(e);

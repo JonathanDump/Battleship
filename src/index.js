@@ -12,14 +12,20 @@ import { Gameboard } from './tests/modules/factories/gameboard.js';
 import { Player } from './tests/modules/factories/player';
 import { Ship } from './tests/modules/factories/ship';
 
-// const gameboard = Gameboard();
-// const player = Player('player');
-// const ai = Player('ai');
-// const ship = Ship(3);
-// console.log(player);
+const gameboard = Gameboard();
+const player = Player('player');
+const ai = Player('ai');
+const ship = Ship(3);
+const ship1 = Ship(2);
 
-// gameboard.placeShip(ship, [0, 0], true);
-// console.log(gameboard.board[0][0].coords);
+gameboard.placeShip(ship, [0, 0], true);
+console.log(gameboard.board);
+
+gameboard.removeShip([0, 0]);
+console.log(gameboard.board);
+
+// gameboard.placeShip(ship1, [0, 0], true);
+// console.log(gameboard.board);
 
 // gameboard.placeRandomShips();
 // console.log(gameboard.isShipsPlacedSuccessful());
@@ -70,7 +76,6 @@ import { Ship } from './tests/modules/factories/ship';
 // // console.table(player.gameboard.getBoard());
 
 loadBoards();
-
 const cells = document.querySelectorAll('#grid-player .cell');
 const ships = document.querySelectorAll('.ship');
 

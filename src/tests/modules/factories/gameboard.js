@@ -28,26 +28,31 @@ export function Gameboard() {
       return board;
     },
     placeShip(ship, coords, isHorizontal = true) {
-      let newX = coords[0] - 1;
-      let newY = coords[1] - 1;
-      let count = 0;
-      const areaLength = (ship.getLength() + 2) * 3;
-      const shipEndX = coords[1] + ship.getLength();
-      const shipEndY = coords[0] + ship.getLength();
+      // let newX = coords[0] - 1;
+      // let newY = coords[1] - 1;
+      // let count = 0;
+      // const areaLength = (ship.getLength() + 2) * 3;
+      const shipEndX = coords[1] + ship.getLength() - 1;
+      const shipEndY = coords[0] + ship.getLength() - 1;
       const endCoordsX = [coords[0], shipEndX];
       const endCoordsY = [shipEndY, coords[1]];
 
       ship.coords.push(coords);
 
+      if (!this.isPlacementPossible(ship.length, coords, isHorizontal)) {
+        console.log('You can`t place here');
+        return false;
+      }
+
       if (isHorizontal) {
-        if (
-          shipEndX > 9 ||
-          this.board[coords[0]][shipEndX] !== 0 ||
-          this.board[coords[0]][coords[1]] !== 0
-        ) {
-          console.log('You can`t place here');
-          return false;
-        }
+        // if (
+        //   shipEndX > 9 ||
+        //   this.board[coords[0]][shipEndX] !== 0 ||
+        //   this.board[coords[0]][coords[1]] !== 0
+        // ) {
+        //   console.log('You can`t place here');
+        //   return false;
+        // }
 
         for (let i = 0; i < ship.getLength(); i++) {
           this.board[coords[0]][coords[1] + i] = ship;
@@ -55,53 +60,114 @@ export function Gameboard() {
         this.ships++;
         ship.coords.push(endCoordsX);
 
-        for (let i = 0; i < areaLength; i++) {
-          if (count > areaLength / 3 - 1) {
-            count = 0;
-            newX++;
-            newY = coords[1] - 1;
-          }
-          try {
-            if (this.board[newX][newY] === 0) {
-              this.board[newX][newY] = -1;
-            }
-            newY++;
-            count++;
-          } catch (e) {
-            newY++;
-            count++;
-            continue;
-          }
-        }
+        // for (let i = 0; i < areaLength; i++) {
+        //   if (count > areaLength / 3 - 1) {
+        //     count = 0;
+        //     newX++;
+        //     newY = coords[1] - 1;
+        //   }
+        //   try {
+        //     if (this.board[newX][newY] === 0) {
+        //       this.board[newX][newY] = -1;
+        //     }
+        //     newY++;
+        //     count++;
+        //   } catch (e) {
+        //     newY++;
+        //     count++;
+        //     continue;
+        //   }
+        // }
         return true;
       } else if (!isHorizontal) {
-        if (
-          shipEndY > 9 ||
-          this.board[shipEndY][coords[1]] !== 0 ||
-          this.board[coords[0]][coords[1]] !== 0
-        ) {
-          console.log('You can`t place here');
-          return false;
-        }
+        // if (
+        //   shipEndY > 9 ||
+        //   this.board[shipEndY][coords[1]] !== 0 ||
+        //   this.board[coords[0]][coords[1]] !== 0
+        // ) {
+        //   console.log('You can`t place here');
+        //   return false;
+        // }
+
         for (let i = 0; i < ship.getLength(); i++) {
           this.board[coords[0] + i][coords[1]] = ship;
         }
         this.ships++;
         ship.coords.push(endCoordsY);
+
+        // for (let i = 0; i < areaLength; i++) {
+        //   if (count > areaLength / 3 - 1) {
+        //     count = 0;
+        //     newY++;
+        //     newX = coords[0] - 1;
+        //   }
+        //   try {
+        //     if (this.board[newX][newY] === 0) {
+        //       this.board[newX][newY] = -1;
+        //     }
+        //     newX++;
+        //     count++;
+        //   } catch (e) {
+        //     newX++;
+        //     count++;
+        //     continue;
+        //   }
+        // }
+        return true;
+      }
+    },
+    isPlacementPossible(length, coords, isHorizontal) {
+      console.log(length);
+      let offX = coords[0] - 1;
+      let offY = coords[1] - 1;
+      let count = 0;
+      const areaLength = (length + 2) * 3;
+      const shipEndX = coords[1] + length - 1;
+      const shipEndY = coords[0] + length - 1;
+
+      if (isHorizontal) {
+        if (shipEndX > 9) {
+          return false;
+        }
+
         for (let i = 0; i < areaLength; i++) {
           if (count > areaLength / 3 - 1) {
             count = 0;
-            newY++;
-            newX = coords[0] - 1;
+            offX++;
+            offY = coords[1] - 1;
           }
           try {
-            if (this.board[newX][newY] === 0) {
-              this.board[newX][newY] = -1;
+            if (typeof this.board[offX][offY] === 'object') {
+              return false;
             }
-            newX++;
+            offY++;
             count++;
           } catch (e) {
-            newX++;
+            offY++;
+            count++;
+            continue;
+          }
+        }
+
+        return true;
+      } else if (!isHorizontal) {
+        if (shipEndY > 9) {
+          return false;
+        }
+        for (let i = 0; i < areaLength; i++) {
+          if (count > areaLength / 3 - 1) {
+            count = 0;
+            offY++;
+            offX = coords[0] - 1;
+          }
+          try {
+            if (typeof this.board[offX][offY] === 'object') {
+              return false;
+            }
+            offX++;
+            count++;
+          } catch (e) {
+            offX++;
             count++;
             continue;
           }
@@ -162,31 +228,35 @@ export function Gameboard() {
     },
     removeShip(coords) {
       const ship = this.board[coords[0]][coords[1]];
+      console.log(ship);
       const endCoords = ship.coords[1];
       const areaLength = (ship.getLength() + 2) * 3;
       let offX = coords[0] - 1;
       let offY = coords[1] - 1;
       let count = 0;
 
-      if (coords[0] === endCoords[0]) {
-        for (let i = 0; i < areaLength; i++) {
-          if (count > areaLength / 3 - 1) {
-            count = 0;
-            offX++;
-            offY = coords[1] - 1;
-          }
-          try {
-            this.board[offX][offY] = 0;
-
-            offY++;
-            count++;
-          } catch (e) {
-            offY++;
-            count++;
-            continue;
-          }
-        }
+      for (let i = 0; i < ship.length; i++) {
+        this.board[coords[0]][coords[1] + i] = 0;
       }
+
+      // if (coords[0] === endCoords[0]) {
+      //   for (let i = 0; i < areaLength; i++) {
+      //     if (count > areaLength / 3 - 1) {
+      //       count = 0;
+      //       offX++;
+      //       offY = coords[1] - 1;
+      //     }
+      //     try {
+      //       this.board[offX][offY] = 0;
+      //       offY++;
+      //       count++;
+      //     } catch (e) {
+      //       offY++;
+      //       count++;
+      //       continue;
+      //     }
+      //   }
+      // }
     },
   };
 }
