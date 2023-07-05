@@ -4,6 +4,13 @@ import { Ship } from '../modules/factories/ship';
 const player = Player('player');
 const ai = Player('ai');
 
+const gridPlayer = document.querySelector('#grid-player');
+const dataTransferStatic = {
+  previousCoords: [NaN],
+  length: 0,
+  class: '',
+};
+
 export function loadBoards() {
   const grid = document.querySelector('#grid-player');
   const gridComputer = document.querySelector('#grid-computer');
@@ -33,42 +40,81 @@ export function drag(e) {
   e.dataTransfer.setData('class', e.target.getAttribute('class'));
   e.dataTransfer.setData('length', e.target.getAttribute('data-length'));
 
+  dataTransferStatic.class = e.target.getAttribute('class');
+  dataTransferStatic.length = +e.target.getAttribute('data-length');
+
   if (e.target.closest('.cell')) {
     console.log(e.target.getAttribute('data-length'));
     const coords = [
       +e.target.parentNode.dataset.x,
       +e.target.parentNode.dataset.y,
     ];
-    // e.dataTransfer.setData('prevCoords', [
-    //   +e.target.parentNode.dataset.x,
-    //   +e.target.parentNode.dataset.y,
-    // ]);
+    e.dataTransfer.setData('prevCoords', [
+      e.target.parentNode.dataset.x,
+      e.target.parentNode.dataset.y,
+    ]);
+
+    dataTransferStatic.previousCoords = [
+      +e.target.parentNode.dataset.x,
+      +e.target.parentNode.dataset.y,
+    ];
+
     player.gameboard.removeShip(coords);
-    console.log(player.gameboard.board[2][0]);
+
     console.table(player.gameboard.board);
   }
 }
 
 export function drop(e) {
-  if (e.target.classList.contains('ship')) {
-    console.log('dsfadfadfadfad');
-    return;
-  }
-  console.log(e.target);
-  let itemClass = e.dataTransfer.getData('class');
-  const length = +e.dataTransfer.getData('length');
+  toggleHover(e);
+
+  let itemClass = dataTransferStatic.class;
+  const length = dataTransferStatic.length;
   const coords = [
     +e.target.getAttribute('data-x'),
     +e.target.getAttribute('data-y'),
   ];
 
-  if (player.gameboard.placeShip(Ship(length), coords, true)) {
-    e.target.append(document.querySelector(`.${itemClass.replace(/ /g, '.')}`));
+  if (
+    e.target.classList.contains('ship') ||
+    !player.gameboard.placeShip(Ship(length), coords, true)
+  ) {
+    if (!isNaN(dataTransferStatic.previousCoords[0])) {
+      player.gameboard.placeShip(
+        Ship(length),
+        dataTransferStatic.previousCoords,
+        true
+      );
+    }
 
-    console.log(player.gameboard.board);
-    // console.log(counter);
+    console.table(player.gameboard.board);
+    return;
   }
-  toggleHover(e);
+  e.target.append(document.querySelector(`.${itemClass.replace(/ /g, '.')}`));
+}
+
+export function dragEnd(e) {
+  const rect = gridPlayer.getBoundingClientRect();
+  console.log(rect);
+  const endX = rect.x + rect.width;
+  const endY = rect.y + rect.height;
+
+  if (
+    e.clientX > endX ||
+    e.clientX < rect.x ||
+    e.clientY > endY ||
+    e.clientY < rect.y
+  ) {
+    if (!isNaN(dataTransferStatic.previousCoords[0])) {
+      console.log('placement');
+      player.gameboard.placeShip(
+        Ship(dataTransferStatic.length),
+        dataTransferStatic.previousCoords,
+        true
+      );
+    }
+  }
+  console.log(player.gameboard.board);
 }
 
 export function toggleHover(e) {
