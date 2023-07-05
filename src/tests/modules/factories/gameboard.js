@@ -80,8 +80,6 @@ export function Gameboard() {
           }
 
           try {
-            // console.log(this.board[offX][offY]);
-            // console.log(offX, offY);
             if (typeof this.board[offX][offY] === 'object') {
               console.log('1231223412341234');
               return false;

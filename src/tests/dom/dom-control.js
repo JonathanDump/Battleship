@@ -39,6 +39,7 @@ export function allowDrop(e) {
 export function drag(e) {
   e.dataTransfer.setData('class', e.target.getAttribute('class'));
   e.dataTransfer.setData('length', e.target.getAttribute('data-length'));
+  e.dataTransfer.setData('index', e.target.getAttribute('data-index'));
 
   dataTransferStatic.class = e.target.getAttribute('class');
   dataTransferStatic.length = +e.target.getAttribute('data-length');
@@ -67,7 +68,7 @@ export function drag(e) {
 
 export function drop(e) {
   toggleHover(e);
-
+  const itemIdex = e.dataTransfer.getData('index');
   let itemClass = dataTransferStatic.class;
   const length = dataTransferStatic.length;
   const coords = [
@@ -90,7 +91,11 @@ export function drop(e) {
     console.table(player.gameboard.board);
     return;
   }
-  e.target.append(document.querySelector(`.${itemClass.replace(/ /g, '.')}`));
+  e.target.append(
+    document.querySelector(
+      `.${itemClass.replace(/ /g, '.')}[data-index='${itemIdex}']`
+    )
+  );
 }
 
 export function dragEnd(e) {
