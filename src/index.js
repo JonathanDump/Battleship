@@ -6,6 +6,7 @@ import {
   dragEnd,
   drop,
   loadBoards,
+  rotateShip,
   toggleHover,
 } from './tests/dom/dom-control';
 import { Gameboard } from './tests/modules/factories/gameboard.js';
@@ -40,11 +41,11 @@ cells.forEach((cell) => {
 ships.forEach((ship) => {
   ship.addEventListener('dragstart', drag);
   ship.addEventListener('dragend', dragEnd);
+  ship.addEventListener('click', rotateShip);
 });
 
 const port = document.querySelector('.port');
-
-const observer = new MutationObserver((mutations, observer) => {
+const observer = new MutationObserver(() => {
   const docks = document.querySelectorAll('.dock');
   docks.forEach((dock) => (dock.dataset.amount = `x${dock.childElementCount}`));
 });

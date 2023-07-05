@@ -129,6 +129,8 @@
   background-color: rgba(57, 72, 103, 0.5);
   z-index: 3;
   box-sizing: border-box;
+  transform-origin: top left;
+  transition: all 0.1s ease;
 }
 .ship > div {
   z-index: 6;
@@ -137,6 +139,10 @@
 }
 .ship:hover {
   cursor: pointer;
+}
+
+.ship-vertical {
+  transform: rotate(90deg) translate(0, -30px);
 }
 
 .ship.s4 {

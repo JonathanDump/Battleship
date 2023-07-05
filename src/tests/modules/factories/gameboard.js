@@ -41,24 +41,35 @@ export function Gameboard() {
         return false;
       }
 
-      if (isHorizontal) {
-        for (let i = 0; i < ship.getLength(); i++) {
-          this.board[coords[0]][coords[1] + i] = ship;
-        }
-        this.ships++;
-        ship.coords.push(endCoordsX);
+      const [x, y] = isHorizontal ? [0, 1] : [1, 0];
 
-        return true;
-      } else if (!isHorizontal) {
-        for (let i = 0; i < ship.getLength(); i++) {
-          this.board[coords[0] + i][coords[1]] = ship;
-        }
-        this.ships++;
-        ship.coords.push(endCoordsY);
-
-        return true;
+      for (let i = 0; i < ship.getLength(); i++) {
+        this.board[coords[0] + i * x][coords[1] + i * y] = ship;
       }
+      this.ships++;
+      ship.coords.push(isHorizontal ? endCoordsX : endCoordsY);
+      console.log(ship);
+      return true;
+
+      // if (isHorizontal) {
+      //   for (let i = 0; i < ship.getLength(); i++) {
+      //     this.board[coords[0]][coords[1] + i] = ship;
+      //   }
+      //   this.ships++;
+      //   ship.coords.push(endCoordsX);
+
+      //   return true;
+      // } else if (!isHorizontal) {
+      //   for (let i = 0; i < ship.getLength(); i++) {
+      //     this.board[coords[0] + i][coords[1]] = ship;
+      //   }
+      //   this.ships++;
+      //   ship.coords.push(endCoordsY);
+
+      //   return true;
+      // }
     },
+
     isPlacementPossible(length, coords, isHorizontal) {
       let offX = coords[0] - 1;
       let offY = coords[1] - 1;
@@ -81,7 +92,7 @@ export function Gameboard() {
 
           try {
             if (typeof this.board[offX][offY] === 'object') {
-              console.log('1231223412341234');
+              console.log('can`t place horizontal');
               return false;
             }
             offY++;
@@ -106,6 +117,7 @@ export function Gameboard() {
           }
           try {
             if (typeof this.board[offX][offY] === 'object') {
+              console.log('can`t place vertical');
               return false;
             }
             offX++;
@@ -172,8 +184,15 @@ export function Gameboard() {
     },
     removeShip(coords) {
       const ship = this.board[coords[0]][coords[1]];
-      for (let i = 0; i < ship.length; i++) {
-        this.board[coords[0]][coords[1] + i] = 0;
+      const endCoords = ship.coords[1];
+      if (coords[0] === endCoords[0]) {
+        for (let i = 0; i < ship.length; i++) {
+          this.board[coords[0]][coords[1] + i] = 0;
+        }
+      } else if (coords[1] === endCoords[1]) {
+        for (let i = 0; i < ship.length; i++) {
+          this.board[coords[0] + i][coords[1]] = 0;
+        }
       }
     },
   };

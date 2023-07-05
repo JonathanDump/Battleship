@@ -11,7 +11,7 @@ export function Ship(length) {
       this.hitCount += 1;
     },
     isSunk() {
-      return (this.sunk = this.getLength() === this.hitCount ? true : false);
+      return (this.sunk = this.getLength() === this.hitCount);
     },
   };
 }

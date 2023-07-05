@@ -9,6 +9,7 @@ const dataTransferStatic = {
   previousCoords: [NaN],
   length: 0,
   class: '',
+  isHorizontal: true,
 };
 
 export function loadBoards() {
@@ -21,13 +22,8 @@ export function loadBoards() {
       cell.dataset.x = i;
       cell.dataset.y = k;
 
-      const cell2 = document.createElement('div');
-      cell2.classList.add('cell');
-      cell2.dataset.x = i;
-      cell2.dataset.y = k;
-
       grid.append(cell);
-      gridComputer.append(cell2);
+      gridComputer.append(cell.cloneNode());
     }
   }
 }
@@ -40,9 +36,14 @@ export function drag(e) {
   e.dataTransfer.setData('class', e.target.getAttribute('class'));
   e.dataTransfer.setData('length', e.target.getAttribute('data-length'));
   e.dataTransfer.setData('index', e.target.getAttribute('data-index'));
+  e.dataTransfer.setData(
+    'isHorizontal',
+    e.target.getAttribute('data-isHorizontal')
+  );
 
   dataTransferStatic.class = e.target.getAttribute('class');
   dataTransferStatic.length = +e.target.getAttribute('data-length');
+  dataTransferStatic.isHorizontal = e.target.getAttribute('data-ishorizontal');
 
   if (e.target.closest('.cell')) {
     console.log(e.target.getAttribute('data-length'));
@@ -69,22 +70,23 @@ export function drag(e) {
 export function drop(e) {
   toggleHover(e);
   const itemIdex = e.dataTransfer.getData('index');
-  let itemClass = dataTransferStatic.class;
+  const itemClass = dataTransferStatic.class;
   const length = dataTransferStatic.length;
   const coords = [
     +e.target.getAttribute('data-x'),
     +e.target.getAttribute('data-y'),
   ];
-
+  const isHorizontal = dataTransferStatic.isHorizontal === 'true';
+  console.log('drop', isHorizontal);
   if (
     e.target.classList.contains('ship') ||
-    !player.gameboard.placeShip(Ship(length), coords, true)
+    !player.gameboard.placeShip(Ship(length), coords, isHorizontal)
   ) {
     if (!isNaN(dataTransferStatic.previousCoords[0])) {
       player.gameboard.placeShip(
         Ship(length),
         dataTransferStatic.previousCoords,
-        true
+        isHorizontal
       );
     }
 
@@ -100,9 +102,9 @@ export function drop(e) {
 
 export function dragEnd(e) {
   const rect = gridPlayer.getBoundingClientRect();
-  console.log(rect);
   const endX = rect.x + rect.width;
   const endY = rect.y + rect.height;
+  const isHorizontal = dataTransferStatic.ishorizontal === 'true';
 
   if (
     e.clientX > endX ||
@@ -115,7 +117,7 @@ export function dragEnd(e) {
       player.gameboard.placeShip(
         Ship(dataTransferStatic.length),
         dataTransferStatic.previousCoords,
-        true
+        isHorizontal
       );
     }
   }
@@ -126,4 +128,32 @@ export function toggleHover(e) {
   if (e.target.classList.contains('cell')) {
     e.target.classList.toggle('cell-hit');
   }
+}
+
+export function rotateShip(e) {
+  console.log('1');
+  const length = +e.target.getAttribute('data-length');
+  if (!e.target.closest('.cell') || length === 1) {
+    console.log('2');
+    return;
+  }
+
+  const coords = [
+    +e.target.parentNode.dataset.x,
+    +e.target.parentNode.dataset.y,
+  ];
+  player.gameboard.removeShip(coords);
+  const isHorizontal = e.target.dataset.ishorizontal === 'true';
+  const qwe = 1 === 2;
+  console.log('sdf', qwe);
+  console.table(player.gameboard.board);
+
+  if (!player.gameboard.placeShip(Ship(length), coords, !isHorizontal)) {
+    player.gameboard.placeShip(Ship(length), coords, isHorizontal);
+    console.log(player.gameboard.board);
+    return;
+  }
+  console.log(player.gameboard.board);
+  e.target.dataset.ishorizontal = !isHorizontal;
+  e.target.classList.toggle('ship-vertical');
 }

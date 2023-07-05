@@ -153,6 +153,8 @@
   // border: 1px solid $mid-gray;
   z-index: 3;
   box-sizing: border-box;
+  transform-origin: top left;
+  transition: all 0.1s ease;
 
   > div {
     z-index: 6;
@@ -165,6 +167,10 @@
   &:hover {
     cursor: pointer;
   }
+}
+
+.ship-vertical {
+  transform: rotate(90deg) translate(0, -30px);
 }
 
 .ship.s4 {
