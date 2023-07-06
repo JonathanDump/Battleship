@@ -125,7 +125,7 @@ export function dragEnd(e) {
       );
     }
   }
-  console.log(player.gameboard.board);
+  console.table(player.gameboard.board);
 }
 
 export function toggleHover(e) {
@@ -159,7 +159,6 @@ export function rotateShip(e) {
   }
   console.log(player.gameboard.board);
   e.target.dataset.ishorizontal = !isHorizontal;
-  e.target.classList.toggle('ship-vertical');
 }
 
 function loadPort() {
@@ -171,7 +170,43 @@ function loadPort() {
 
 export function resetBoard() {
   player.gameboard.clearBoard();
-  console.log('claer', player.gameboard.board);
   loadBoards();
   loadPort();
+}
+
+export function loadRandomShips() {
+  resetBoard();
+  player.gameboard.placeRandomShips();
+  console.table(player.gameboard.board);
+  const board = player.gameboard.board;
+  const cells = [...document.querySelectorAll('#grid-player .cell')];
+  const prevShips = [];
+
+  for (let i = 0; i < 10; i++) {
+    for (let k = 0; k < 10; k++) {
+      if (board[i][k] === 0) {
+        continue;
+      }
+
+      const ship = board[i][k];
+      if (prevShips.includes(ship)) {
+        continue;
+      }
+
+      prevShips.push(ship);
+      const cell = cells.find(
+        (cell) => +cell.dataset.x === i && +cell.dataset.y === k
+      );
+      console.log(cell);
+
+      const shipDOM = document.querySelector(
+        `.d${ship.length}`
+      ).firstElementChild;
+      console.log('shipDom', shipDOM);
+      shipDOM.dataset.ishorizontal = `${ship.isHorizontal}`;
+      console.log('shipDom2', shipDOM);
+
+      cell.appendChild(shipDOM);
+    }
+  }
 }

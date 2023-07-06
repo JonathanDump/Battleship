@@ -124,8 +124,7 @@
 }
 
 .ship {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
   position: absolute;
   z-index: 3;
   box-sizing: border-box;
@@ -133,8 +132,8 @@
   transition: all 0.1s ease;
 }
 .ship__cell {
-  width: 30px;
-  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
   flex: 1;
   background-color: rgba(57, 72, 103, 0.5);
   pointer-events: none;
@@ -143,9 +142,8 @@
   cursor: pointer;
 }
 
-.ship-vertical {
-  grid-template-columns: auto;
-  grid-template-rows: repeat(4, 1fr);
+.ship[data-ishorizontal=false] {
+  flex-direction: column;
 }
 
 body {

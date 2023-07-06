@@ -9,22 +9,27 @@ import {
   rotateShip,
   toggleHover,
   resetBoard,
+  loadRandomShips,
 } from './tests/dom/dom-control';
 import { Gameboard } from './tests/modules/factories/gameboard.js';
 import { Player } from './tests/modules/factories/player';
 import { Ship } from './tests/modules/factories/ship';
 
-// const gameboard = Gameboard();
-// const player = Player('player');
-// const ai = Player('ai');
-// const ship = Ship(3);
-// const ship1 = Ship(2);
+const gameboard = Gameboard();
+const player = Player('player');
+const ai = Player('ai');
+const ship = Ship(3);
+const ship1 = Ship(2);
+
+gameboard.placeRandomShips();
+console.table(gameboard.board);
 
 loadBoards();
 const cells = document.querySelectorAll('#grid-player .cell');
 const ships = document.querySelectorAll('.ship');
 const mousePos = { x: null, y: null };
 const resetButton = document.querySelector('#reset-button');
+const randomButton = document.querySelector('#random-button');
 
 window.addEventListener('mousemove', (e) => {
   mousePos.x = e.clientX;
@@ -46,6 +51,7 @@ ships.forEach((ship) => {
 });
 
 resetButton.addEventListener('click', resetBoard);
+randomButton.addEventListener('click', loadRandomShips);
 
 const port = document.querySelector('.port');
 

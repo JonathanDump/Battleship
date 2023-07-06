@@ -42,12 +42,13 @@ export function Gameboard() {
       const endCoordsX = [coords[0], shipEndX];
       const endCoordsY = [shipEndY, coords[1]];
 
-      ship.coords.push(coords);
-
       if (!this.isPlacementPossible(ship.length, coords, isHorizontal)) {
         console.log('You can`t place here', coords);
         return false;
       }
+
+      ship.isHorizontal = isHorizontal;
+      ship.coords.push(coords);
 
       const [x, y] = isHorizontal ? [0, 1] : [1, 0];
 
