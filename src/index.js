@@ -8,6 +8,7 @@ import {
   loadBoards,
   rotateShip,
   toggleHover,
+  resetBoard,
 } from './tests/dom/dom-control';
 import { Gameboard } from './tests/modules/factories/gameboard.js';
 import { Player } from './tests/modules/factories/player';
@@ -23,6 +24,7 @@ loadBoards();
 const cells = document.querySelectorAll('#grid-player .cell');
 const ships = document.querySelectorAll('.ship');
 const mousePos = { x: null, y: null };
+const resetButton = document.querySelector('#reset-button');
 
 window.addEventListener('mousemove', (e) => {
   mousePos.x = e.clientX;
@@ -31,7 +33,6 @@ window.addEventListener('mousemove', (e) => {
 });
 
 cells.forEach((cell) => {
-  cell.addEventListener('dragover', allowDrop);
   cell.addEventListener('dragover', allowDrop);
   cell.addEventListener('drop', drop);
   cell.addEventListener('dragenter', toggleHover);
@@ -44,10 +45,29 @@ ships.forEach((ship) => {
   ship.addEventListener('click', rotateShip);
 });
 
+resetButton.addEventListener('click', resetBoard);
+
 const port = document.querySelector('.port');
+
 const observer = new MutationObserver(() => {
+  const cells = document.querySelectorAll('#grid-player .cell');
+  const ships = document.querySelectorAll('.ship');
   const docks = document.querySelectorAll('.dock');
   docks.forEach((dock) => (dock.dataset.amount = `x${dock.childElementCount}`));
+
+  cells.forEach((cell) => {
+    console.log('mutation');
+    cell.addEventListener('dragover', allowDrop);
+    cell.addEventListener('drop', drop);
+    cell.addEventListener('dragenter', toggleHover);
+    cell.addEventListener('dragleave', toggleHover);
+  });
+
+  ships.forEach((ship) => {
+    ship.addEventListener('dragstart', drag);
+    ship.addEventListener('dragend', dragEnd);
+    ship.addEventListener('click', rotateShip);
+  });
 });
 
 observer.observe(port, { childList: true, subtree: true });

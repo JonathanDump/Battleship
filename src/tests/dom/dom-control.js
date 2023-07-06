@@ -1,5 +1,6 @@
 import { Player } from '../modules/factories/player';
 import { Ship } from '../modules/factories/ship';
+import { portHTML } from './patterns';
 
 const player = Player('player');
 const ai = Player('ai');
@@ -15,6 +16,8 @@ const dataTransferStatic = {
 export function loadBoards() {
   const grid = document.querySelector('#grid-player');
   const gridComputer = document.querySelector('#grid-computer');
+  grid.innerHTML = '';
+  gridComputer.innerHTML = '';
   for (let i = 0; i < 10; i++) {
     for (let k = 0; k < 10; k++) {
       const cell = document.createElement('div');
@@ -157,4 +160,18 @@ export function rotateShip(e) {
   console.log(player.gameboard.board);
   e.target.dataset.ishorizontal = !isHorizontal;
   e.target.classList.toggle('ship-vertical');
+}
+
+function loadPort() {
+  const port = document.querySelector('.port');
+
+  port.innerHTML = '';
+  port.innerHTML = portHTML;
+}
+
+export function resetBoard() {
+  player.gameboard.clearBoard();
+  console.log('claer', player.gameboard.board);
+  loadBoards();
+  loadPort();
 }

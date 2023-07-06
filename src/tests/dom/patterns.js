@@ -1,23 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Battleship</title>
-  </head>
-  <body>
-    <div id="app" class="app">
-      <div id="header" class="header">
-        <div class="logo">BATTLESHIP</div>
-      </div>
-      <div id="main" class="main">
-        <div class="main-block player">
-          <div class="controls">
-            <div class="instruction">
-              Drag to place a ship <br />and click to rotate
-            </div>
-            <div class="port">
-              <div class="dock d4" data-amount="x1">
+export const portHTML = `<div class="dock d4" data-amount="x1">
                 <div
                   class="ship s4"
                   draggable="true"
@@ -120,50 +101,4 @@
                 >
                   <div class="ship__cell"></div>
                 </div>
-              </div>
-            </div>
-            <div class="buttons">
-              <div class="buttons-wrap">
-                <button
-                  class="buttons-wrap__button"
-                  type="button"
-                  id="reset-button"
-                >
-                  Reset
-                </button>
-                <button
-                  class="buttons-wrap__button"
-                  type="button"
-                  id="random-button"
-                >
-                  Random
-                </button>
-                <button
-                  class="buttons-wrap__button"
-                  type="button"
-                  id="start-button"
-                >
-                  Start game
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="board">
-            <div class="board__grid" id="grid-player"></div>
-            <div class="board__label">Your grid</div>
-          </div>
-          <div></div>
-        </div>
-        <div class="main-block computer">
-          <div class="board">
-            <div class="board__grid" id="grid-computer"></div>
-            <div class="board__label">Computer's grid</div>
-          </div>
-        </div>
-      </div>
-      <div id="footer" class="footer">
-        <div class="github">Made by Jonathan Dump</div>
-      </div>
-    </div>
-  </body>
-</html>
+              </div>`;

@@ -21,6 +21,14 @@ export function Gameboard() {
     board,
     ships,
     gameOver,
+    clearBoard() {
+      for (let i = 0; i < SIZE; i++) {
+        this.board[i] = [];
+        for (let k = 0; k < SIZE; k++) {
+          this.board[i].push(0);
+        }
+      }
+    },
     getRandomCoords() {
       return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
     },
@@ -197,5 +205,4 @@ export function Gameboard() {
     },
   };
 }
-
 console.log('fdg');
