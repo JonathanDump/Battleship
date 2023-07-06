@@ -146,22 +146,29 @@
 }
 
 .ship {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   position: absolute;
   // margin: -2px;
-  background-color: rgb(57, 72, 103, 0.5);
+  // background-color: rgb(57, 72, 103, 0.5);
   // border: 1px solid $mid-gray;
   z-index: 3;
   box-sizing: border-box;
   transform-origin: top left;
   transition: all 0.1s ease;
+  // width: fit-content;
+  // height: fit-content;
 
-  > div {
-    z-index: 6;
+  &__cell {
+    width: 30px;
+    height: 30px;
+    // z-index: 6;
     flex: 1;
     // border: 1px solid red;
     // border-bottom: 3px solid red;
-    box-sizing: border-box;
+    // box-sizing: border-box;
+    background-color: rgb(57, 72, 103, 0.5);
+    pointer-events: none;
   }
 
   &:hover {
@@ -170,22 +177,24 @@
 }
 
 .ship-vertical {
-  transform: rotate(90deg) translate(0, -30px);
+  // transform: rotate(90deg) translate(0, -30px);
+  grid-template-columns: auto;
+  grid-template-rows: repeat(4, 1fr);
 }
 
-.ship.s4 {
-  height: 30px;
-  width: 120px;
-}
-.ship.s3 {
-  height: 30px;
-  width: 90px;
-}
-.ship.s2 {
-  height: 30px;
-  width: 60px;
-}
-.ship.s1 {
-  height: 30px;
-  width: 30px;
-}
+// .ship.s4 {
+//   height: 30px;
+//   width: 120px;
+// }
+// .ship.s3 {
+//   height: 30px;
+//   width: 90px;
+// }
+// .ship.s2 {
+//   height: 30px;
+//   width: 60px;
+// }
+// .ship.s1 {
+//   height: 30px;
+//   width: 30px;
+// }

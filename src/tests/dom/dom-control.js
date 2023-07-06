@@ -123,7 +123,6 @@ export function dragEnd(e) {
     }
   }
   console.log(player.gameboard.board);
-  e.stopPropagation();
 }
 
 export function toggleHover(e) {

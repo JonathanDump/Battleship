@@ -51,3 +51,5 @@ const observer = new MutationObserver(() => {
 });
 
 observer.observe(port, { childList: true, subtree: true });
+
+document.addEventListener('click', (e) => console.log(e.target));
