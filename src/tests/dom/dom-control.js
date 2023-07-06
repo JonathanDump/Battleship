@@ -44,7 +44,7 @@ export function drag(e) {
   dataTransferStatic.class = e.target.getAttribute('class');
   dataTransferStatic.length = +e.target.getAttribute('data-length');
   dataTransferStatic.isHorizontal = e.target.getAttribute('data-ishorizontal');
-
+  console.log('drag', dataTransferStatic.isHorizontal);
   if (e.target.closest('.cell')) {
     console.log(e.target.getAttribute('data-length'));
     const coords = [
@@ -104,7 +104,6 @@ export function dragEnd(e) {
   const rect = gridPlayer.getBoundingClientRect();
   const endX = rect.x + rect.width;
   const endY = rect.y + rect.height;
-  const isHorizontal = dataTransferStatic.ishorizontal === 'true';
 
   if (
     e.clientX > endX ||
@@ -114,6 +113,8 @@ export function dragEnd(e) {
   ) {
     if (!isNaN(dataTransferStatic.previousCoords[0])) {
       console.log('placement');
+      const isHorizontal = dataTransferStatic.isHorizontal === 'true';
+      console.log('end', isHorizontal);
       player.gameboard.placeShip(
         Ship(dataTransferStatic.length),
         dataTransferStatic.previousCoords,
@@ -122,6 +123,7 @@ export function dragEnd(e) {
     }
   }
   console.log(player.gameboard.board);
+  e.stopPropagation();
 }
 
 export function toggleHover(e) {
