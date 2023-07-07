@@ -147,15 +147,16 @@ export function Gameboard() {
 
       if (typeof this.board[x][y] === 'object') {
         this.board[x][y].hit();
-        this.board[x][y] = 'x';
 
         if (cell.isSunk()) {
           console.log(cell.isSunk());
           this.ships--;
           // console.log(cell.isHorizontal);
+          console.log('cell coords', cell.coords);
           this.surroundShipWithMisses(
             cell.length,
             cell.coords[0],
+
             cell.isHorizontal
           );
           // console.table(this.board);
@@ -186,7 +187,7 @@ export function Gameboard() {
 
           try {
             if (
-              this.board[offX][offY] === 'x' ||
+              typeof this.board[offX][offY] === 'object' ||
               this.board[offX][offY] === undefined
             ) {
               offY++;
@@ -215,7 +216,7 @@ export function Gameboard() {
           }
           try {
             if (
-              this.board[offX][offY] === 'x' ||
+              typeof this.board[offX][offY] === 'object' ||
               this.board[offX][offY] === undefined
             ) {
               offX++;

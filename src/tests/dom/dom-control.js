@@ -242,24 +242,21 @@ export function hit(e) {
   const playerCells = [...document.querySelectorAll('#grid-player .cell')];
   const aiCells = [...document.querySelectorAll('#grid-computer .cell')];
 
-  // const playerCells = Array(10)
-  //   .fill()
-  //   .map((_, index) => playerCellsArr.slice(index * 10, (index + 1) * 10));
-  // const aiCells = Array(10)
-  //   .fill()
-  //   .map((_, index) => aiCellsArr.slice(index * 10, (index + 1) * 10));
-
   aiCells
     .find((cell) => +cell.dataset.x === aiX && +cell.dataset.y === aiY)
     .classList.add(
-      `${ai.gameboard.board[aiX][aiY] === 'x' ? 'hit' : 'missed'}`
+      `${typeof ai.gameboard.board[aiX][aiY] === 'object' ? 'hit' : 'missed'}`
     );
 
   const [plX, plY] = ai.randomAttack(player.gameboard);
   playerCells
     .find((cell) => +cell.dataset.x === plX && +cell.dataset.y === plY)
     .classList.add(
-      `${player.gameboard.board[plX][plY] === 'x' ? 'hit-player' : 'missed'}`
+      `${
+        typeof player.gameboard.board[plX][plY] === 'object'
+          ? 'hit-player'
+          : 'missed'
+      }`
     );
 
   console.log(ai.gameboard.board[aiX][aiY]);
@@ -277,11 +274,15 @@ export function hit(e) {
       );
     }
   }
+
+  // if (ai.gameboard.isGameOver()){
+
+  // }
 }
 
-export function surroundShipWithMissesDOM(coords, board, cells) {
-  console.log(coords);
-  const ship = board[coords[0]][coords[1]];
+export function surroundShipWithMissesDOM(coordsHit, board, cells) {
+  const ship = board[coordsHit[0]][coordsHit[1]];
+  const coords = ship.coords[0];
   const length = ship.length;
   const isHorizontal = ship.isHorizontal;
   let offX = coords[0] - 1;
