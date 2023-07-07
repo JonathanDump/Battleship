@@ -5,10 +5,11 @@
 
 body {
   font-family: 'Montserrat', sans-serif;
-  width: 100vw;
+  // width: 100vw;
   height: 100vh;
   background-color: $bg-color;
   color: $the-darkest;
+  overflow-x: hidden;
 
   #app {
     // width: 100%;
@@ -28,6 +29,17 @@ body {
 
     #footer {
       padding: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .github {
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
   }
 }

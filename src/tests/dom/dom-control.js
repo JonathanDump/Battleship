@@ -233,17 +233,15 @@ export function startGame() {
   });
 
   ai.gameboard.placeRandomShips();
-  console.table(ai.gameboard.board);
 }
 
 export function hit(e) {
   const [aiX, aiY] = [+e.target.dataset.x, +e.target.dataset.y];
-  console.log('1');
+
   if (!player.attack(ai.gameboard, [aiX, aiY])) {
-    console.log('2');
     return;
   }
-  console.table(ai.gameboard.board);
+
   const playerCells = [...document.querySelectorAll('#grid-player .cell')];
   const aiCells = [...document.querySelectorAll('#grid-computer .cell')];
 
@@ -264,7 +262,6 @@ export function hit(e) {
       }`
     );
 
-  console.log(ai.gameboard.board[aiX][aiY]);
   if (typeof ai.gameboard.board[aiX][aiY] === 'object') {
     if (ai.gameboard.board[aiX][aiY].isSunk()) {
       surroundShipWithMissesDOM([aiX, aiY], ai.gameboard.board, aiCells);

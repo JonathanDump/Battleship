@@ -11,7 +11,6 @@ export function Player(name) {
     isAttackPossible(coords) {
       const [x, y] = coords;
       if (hits.has(`${x}, ${y}`)) {
-        console.log('You have already attacked it', coords);
         return false;
       }
       return true;

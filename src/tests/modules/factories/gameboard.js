@@ -36,14 +36,12 @@ export function Gameboard() {
       return board;
     },
     placeShip(ship, coords, isHorizontal = true) {
-      console.log(coords);
       const shipEndX = coords[1] + ship.getLength() - 1;
       const shipEndY = coords[0] + ship.getLength() - 1;
       const endCoordsX = [coords[0], shipEndX];
       const endCoordsY = [shipEndY, coords[1]];
 
       if (!this.isPlacementPossible(ship.length, coords, isHorizontal)) {
-        console.log('You can`t place here', coords);
         return false;
       }
 
@@ -57,7 +55,7 @@ export function Gameboard() {
       }
       this.ships++;
       ship.coords.push(isHorizontal ? endCoordsX : endCoordsY);
-      console.log(ship);
+
       return true;
 
       // if (isHorizontal) {
@@ -101,7 +99,6 @@ export function Gameboard() {
 
           try {
             if (typeof this.board[offX][offY] === 'object') {
-              console.log('can`t place horizontal');
               return false;
             }
             offY++;
@@ -126,7 +123,6 @@ export function Gameboard() {
           }
           try {
             if (typeof this.board[offX][offY] === 'object') {
-              console.log('can`t place vertical');
               return false;
             }
             offX++;
@@ -149,17 +145,14 @@ export function Gameboard() {
         this.board[x][y].hit();
 
         if (cell.isSunk()) {
-          console.log(cell.isSunk());
           this.ships--;
-          // console.log(cell.isHorizontal);
-          console.log('cell coords', cell.coords);
+
           this.surroundShipWithMisses(
             cell.length,
             cell.coords[0],
 
             cell.isHorizontal
           );
-          // console.table(this.board);
         }
       } else {
         this.board[x][y] = '*';
@@ -171,7 +164,6 @@ export function Gameboard() {
       }
     },
     surroundShipWithMisses(length, coords, isHorizontal) {
-      console.log(coords);
       let offX = coords[0] - 1;
       let offY = coords[1] - 1;
       let count = 0;
