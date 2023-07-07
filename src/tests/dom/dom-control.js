@@ -18,6 +18,11 @@ const instruction = document.querySelector('.instruction');
 const buttons = document.querySelector('.buttons');
 const port = document.querySelector('.port');
 
+const gameOverBg = document.querySelector('.game-over-bg');
+const gameOverPlate = document.querySelector('.game-over');
+const gameOverWinner = document.querySelector('.game-over__winner');
+const playAgainButton = document.querySelector('.game-over__play-again');
+
 export const restartButton = document.querySelector('.restart-button');
 
 export function loadBoards() {
@@ -275,9 +280,18 @@ export function hit(e) {
     }
   }
 
-  // if (ai.gameboard.isGameOver()){
+  if (!ai.gameboard.isGameOver() && !player.gameboard.isGameOver()) {
+    return;
+  }
+  gameOverBg.classList.add('game-over-visible');
+  gameOverPlate.classList.add('game-over-visible');
+  playAgainButton.addEventListener('click', () => location.reload());
 
-  // }
+  if (ai.gameboard.isGameOver()) {
+    gameOverWinner.textContent = 'You are the winner';
+  } else {
+    gameOverWinner.textContent = 'The winner is computer';
+  }
 }
 
 export function surroundShipWithMissesDOM(coordsHit, board, cells) {

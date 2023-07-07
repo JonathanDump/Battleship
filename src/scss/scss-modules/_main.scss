@@ -9,6 +9,20 @@
   transform: translate(-50%, -50%);
 }
 
+@mixin buttons-style {
+  appearance: none;
+  border: none;
+  outline: none;
+  background-color: $the-darkest;
+  color: $bg-color;
+  padding: 6px;
+  transition: all 0.1s ease;
+  border: 1px solid $the-darkest;
+}
+
+body {
+  position: relative;
+}
 #main {
   width: 100%;
   display: flex;
@@ -167,14 +181,7 @@
       }
 
       button {
-        appearance: none;
-        border: none;
-        outline: none;
-        background-color: $the-darkest;
-        color: $bg-color;
-        padding: 6px;
-        transition: all 0.1s ease;
-        border: 1px solid $the-darkest;
+        @include buttons-style();
 
         &:hover {
           background-color: $bg-color;
@@ -232,7 +239,7 @@
     min-width: 30px;
     min-height: 30px;
     flex: 1;
-    background-color: rgb(57, 72, 103, 0.5);
+    background-color: $transparent-gray;
     pointer-events: none;
   }
 
@@ -251,4 +258,55 @@
 
 .hide-element {
   display: none !important;
+}
+
+.game-over-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: $transparent-gray;
+  z-index: 90;
+  transition: all 0.1s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.game-over {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  z-index: 99;
+  background-color: $bg-color;
+  min-width: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px;
+  transition: all 0.1s ease;
+  opacity: 0;
+  visibility: hidden;
+
+  &__winner {
+    font-size: 26px;
+  }
+
+  &__play-again {
+    @include buttons-style();
+    &:hover {
+      background-color: $bg-color;
+
+      color: $the-darkest;
+      cursor: pointer;
+    }
+  }
+}
+
+.game-over-visible {
+  opacity: 1;
+  visibility: visible;
 }
