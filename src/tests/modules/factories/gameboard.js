@@ -3,7 +3,7 @@ import { Ship } from './ship.js';
 export function Gameboard() {
   const SIZE = 10;
   const board = createBoard();
-  let gameOver = false;
+  // let gameOver = false;
   let ships = 0;
 
   function createBoard() {
@@ -20,7 +20,7 @@ export function Gameboard() {
   return {
     board,
     ships,
-    gameOver,
+    // gameOver,
     clearBoard() {
       for (let i = 0; i < SIZE; i++) {
         this.board[i] = [];
@@ -150,16 +150,89 @@ export function Gameboard() {
         this.board[x][y] = 'x';
 
         if (cell.isSunk()) {
+          console.log(cell.isSunk());
           this.ships--;
+          // console.log(cell.isHorizontal);
+          this.surroundShipWithMisses(
+            cell.length,
+            cell.coords[0],
+            cell.isHorizontal
+          );
+          // console.table(this.board);
         }
       } else {
         this.board[x][y] = '*';
       }
-
+    },
+    isGameOver() {
       if (this.ships === 0) {
-        this.gameOver = true;
+        return true;
+      }
+    },
+    surroundShipWithMisses(length, coords, isHorizontal) {
+      console.log(coords);
+      let offX = coords[0] - 1;
+      let offY = coords[1] - 1;
+      let count = 0;
+      const areaLength = (length + 2) * 3;
 
-        // alert('game over');
+      if (isHorizontal) {
+        for (let i = 0; i < areaLength; i++) {
+          if (count > areaLength / 3 - 1) {
+            count = 0;
+            offX++;
+            offY = coords[1] - 1;
+          }
+
+          try {
+            if (
+              this.board[offX][offY] === 'x' ||
+              this.board[offX][offY] === undefined
+            ) {
+              offY++;
+              count++;
+
+              continue;
+            }
+            this.board[offX][offY] = '*';
+            offY++;
+            count++;
+          } catch (e) {
+            offY++;
+            count++;
+
+            continue;
+          }
+        }
+
+        return true;
+      } else if (!isHorizontal) {
+        for (let i = 0; i < areaLength; i++) {
+          if (count > areaLength / 3 - 1) {
+            count = 0;
+            offY++;
+            offX = coords[0] - 1;
+          }
+          try {
+            if (
+              this.board[offX][offY] === 'x' ||
+              this.board[offX][offY] === undefined
+            ) {
+              offX++;
+              count++;
+
+              continue;
+            }
+            this.board[offX][offY] = '*';
+            offX++;
+            count++;
+          } catch (e) {
+            offX++;
+            count++;
+
+            continue;
+          }
+        }
         return true;
       }
     },
@@ -206,4 +279,3 @@ export function Gameboard() {
     },
   };
 }
-console.log('fdg');

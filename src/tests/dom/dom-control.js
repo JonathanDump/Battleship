@@ -2,16 +2,23 @@ import { Player } from '../modules/factories/player';
 import { Ship } from '../modules/factories/ship';
 import { portHTML } from './patterns';
 
-const player = Player('player');
+export const player = Player('player');
 const ai = Player('ai');
 
 const gridPlayer = document.querySelector('#grid-player');
+const gridAi = document.querySelector('#grid-computer');
 const dataTransferStatic = {
   previousCoords: [NaN],
   length: 0,
   class: '',
   isHorizontal: true,
 };
+
+const instruction = document.querySelector('.instruction');
+const buttons = document.querySelector('.buttons');
+const port = document.querySelector('.port');
+
+export const restartButton = document.querySelector('.restart-button');
 
 export function loadBoards() {
   const grid = document.querySelector('#grid-player');
@@ -47,9 +54,8 @@ export function drag(e) {
   dataTransferStatic.class = e.target.getAttribute('class');
   dataTransferStatic.length = +e.target.getAttribute('data-length');
   dataTransferStatic.isHorizontal = e.target.getAttribute('data-ishorizontal');
-  console.log('drag', dataTransferStatic.isHorizontal);
+
   if (e.target.closest('.cell')) {
-    console.log(e.target.getAttribute('data-length'));
     const coords = [
       +e.target.parentNode.dataset.x,
       +e.target.parentNode.dataset.y,
@@ -65,8 +71,6 @@ export function drag(e) {
     ];
 
     player.gameboard.removeShip(coords);
-
-    console.table(player.gameboard.board);
   }
 }
 
@@ -80,7 +84,7 @@ export function drop(e) {
     +e.target.getAttribute('data-y'),
   ];
   const isHorizontal = dataTransferStatic.isHorizontal === 'true';
-  console.log('drop', isHorizontal);
+
   if (
     e.target.classList.contains('ship') ||
     !player.gameboard.placeShip(Ship(length), coords, isHorizontal)
@@ -93,7 +97,6 @@ export function drop(e) {
       );
     }
 
-    console.table(player.gameboard.board);
     return;
   }
   e.target.append(
@@ -115,9 +118,8 @@ export function dragEnd(e) {
     e.clientY < rect.y
   ) {
     if (!isNaN(dataTransferStatic.previousCoords[0])) {
-      console.log('placement');
       const isHorizontal = dataTransferStatic.isHorizontal === 'true';
-      console.log('end', isHorizontal);
+
       player.gameboard.placeShip(
         Ship(dataTransferStatic.length),
         dataTransferStatic.previousCoords,
@@ -125,20 +127,17 @@ export function dragEnd(e) {
       );
     }
   }
-  console.table(player.gameboard.board);
 }
 
 export function toggleHover(e) {
   if (e.target.classList.contains('cell')) {
-    e.target.classList.toggle('cell-hit');
+    e.target.classList.toggle('cell-hover');
   }
 }
 
 export function rotateShip(e) {
-  console.log('1');
   const length = +e.target.getAttribute('data-length');
   if (!e.target.closest('.cell') || length === 1) {
-    console.log('2');
     return;
   }
 
@@ -149,15 +148,13 @@ export function rotateShip(e) {
   player.gameboard.removeShip(coords);
   const isHorizontal = e.target.dataset.ishorizontal === 'true';
   const qwe = 1 === 2;
-  console.log('sdf', qwe);
-  console.table(player.gameboard.board);
 
   if (!player.gameboard.placeShip(Ship(length), coords, !isHorizontal)) {
     player.gameboard.placeShip(Ship(length), coords, isHorizontal);
-    console.log(player.gameboard.board);
+
     return;
   }
-  console.log(player.gameboard.board);
+
   e.target.dataset.ishorizontal = !isHorizontal;
 }
 
@@ -177,7 +174,7 @@ export function resetBoard() {
 export function loadRandomShips() {
   resetBoard();
   player.gameboard.placeRandomShips();
-  console.table(player.gameboard.board);
+
   const board = player.gameboard.board;
   const cells = [...document.querySelectorAll('#grid-player .cell')];
   const prevShips = [];
@@ -197,16 +194,156 @@ export function loadRandomShips() {
       const cell = cells.find(
         (cell) => +cell.dataset.x === i && +cell.dataset.y === k
       );
-      console.log(cell);
 
       const shipDOM = document.querySelector(
         `.d${ship.length}`
       ).firstElementChild;
-      console.log('shipDom', shipDOM);
+
       shipDOM.dataset.ishorizontal = `${ship.isHorizontal}`;
-      console.log('shipDom2', shipDOM);
 
       cell.appendChild(shipDOM);
     }
+  }
+}
+
+export function startGame() {
+  if (!player.gameboard.isShipsPlacedSuccessful()) {
+    return;
+  }
+  const aiCells = document.querySelectorAll('#grid-computer .cell');
+  aiCells.forEach((cell) => cell.addEventListener('click', hit));
+
+  gridAi.classList.remove('draggable-off');
+  gridPlayer.innerHTML += ` <div class="disable-grid"></div>`;
+  const ships = document.querySelectorAll('div.ship');
+
+  instruction.classList.add('hide-element');
+  buttons.classList.add('hide-element');
+  port.classList.add('hide-element');
+  restartButton.classList.add('enabled-button');
+
+  ships.forEach((ship) => {
+    ship.removeAttribute('draggable');
+    ship.classList.add('draggable-off');
+  });
+
+  ai.gameboard.placeRandomShips();
+  console.table(ai.gameboard.board);
+}
+
+export function hit(e) {
+  const [aiX, aiY] = [+e.target.dataset.x, +e.target.dataset.y];
+  console.log('1');
+  if (!player.attack(ai.gameboard, [aiX, aiY])) {
+    console.log('2');
+    return;
+  }
+  console.table(ai.gameboard.board);
+  const playerCells = [...document.querySelectorAll('#grid-player .cell')];
+  const aiCells = [...document.querySelectorAll('#grid-computer .cell')];
+
+  // const playerCells = Array(10)
+  //   .fill()
+  //   .map((_, index) => playerCellsArr.slice(index * 10, (index + 1) * 10));
+  // const aiCells = Array(10)
+  //   .fill()
+  //   .map((_, index) => aiCellsArr.slice(index * 10, (index + 1) * 10));
+
+  aiCells
+    .find((cell) => +cell.dataset.x === aiX && +cell.dataset.y === aiY)
+    .classList.add(
+      `${ai.gameboard.board[aiX][aiY] === 'x' ? 'hit' : 'missed'}`
+    );
+
+  const [plX, plY] = ai.randomAttack(player.gameboard);
+  playerCells
+    .find((cell) => +cell.dataset.x === plX && +cell.dataset.y === plY)
+    .classList.add(
+      `${player.gameboard.board[plX][plY] === 'x' ? 'hit-player' : 'missed'}`
+    );
+
+  console.log(ai.gameboard.board[aiX][aiY]);
+  if (typeof ai.gameboard.board[aiX][aiY] === 'object') {
+    if (ai.gameboard.board[aiX][aiY].isSunk()) {
+      surroundShipWithMissesDOM([aiX, aiY], ai.gameboard.board, aiCells);
+    }
+  }
+  if (typeof player.gameboard.board[plX][plY] === 'object') {
+    if (player.gameboard.board[plX][plY].isSunk()) {
+      surroundShipWithMissesDOM(
+        [plX, plY],
+        player.gameboard.board,
+        playerCells
+      );
+    }
+  }
+}
+
+export function surroundShipWithMissesDOM(coords, board, cells) {
+  console.log(coords);
+  const ship = board[coords[0]][coords[1]];
+  const length = ship.length;
+  const isHorizontal = ship.isHorizontal;
+  let offX = coords[0] - 1;
+  let offY = coords[1] - 1;
+  let count = 0;
+  const areaLength = (length + 2) * 3;
+
+  if (isHorizontal) {
+    for (let i = 0; i < areaLength; i++) {
+      if (count > areaLength / 3 - 1) {
+        count = 0;
+        offX++;
+        offY = coords[1] - 1;
+      }
+
+      try {
+        if (board[offX][offY] === 'x' || board[offX][offY] === undefined) {
+          offY++;
+          count++;
+
+          continue;
+        }
+        cells
+          .find((cell) => +cell.dataset.x === offX && +cell.dataset.y === offY)
+          .classList.add('missed');
+        offY++;
+        count++;
+      } catch (e) {
+        offY++;
+        count++;
+
+        continue;
+      }
+    }
+
+    return true;
+  } else if (!isHorizontal) {
+    for (let i = 0; i < areaLength; i++) {
+      if (count > areaLength / 3 - 1) {
+        count = 0;
+        offY++;
+        offX = coords[0] - 1;
+      }
+      try {
+        if (board[offX][offY] === 'x' || board[offX][offY] === undefined) {
+          offX++;
+          count++;
+
+          continue;
+        }
+        cells
+          .find((cell) => +cell.dataset.x === offX && +cell.dataset.y === offY)
+          .classList.add('missed');
+        offX++;
+        count++;
+      } catch (e) {
+        offX++;
+        count++;
+
+        continue;
+      }
+    }
+    return true;
   }
 }

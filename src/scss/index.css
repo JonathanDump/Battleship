@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import './normalize.css';
 #main {
@@ -21,6 +22,7 @@
   gap: 8px;
 }
 #main .main-block .board__grid {
+  position: relative;
   border: 1px solid #394867;
   background-color: #394867;
   height: 300px;
@@ -34,15 +36,58 @@
   background-color: #f1f6f9;
   position: relative;
   transition: all 0.1s ease;
+  text-align: center;
 }
-#main .main-block .board__grid .cell-hit {
+#main .main-block .board__grid .cell-hover {
   background-color: #9ba4b5;
+}
+#main .main-block .board__grid .missed::after {
+  content: "•";
+  font-size: 26px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#main .main-block .board__grid .missed:hover {
+  background-color: #f1f6f9 !important;
+}
+#main .main-block .board__grid .hit {
+  background-color: #9ba4b5;
+}
+#main .main-block .board__grid .hit::after {
+  content: "✖";
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#main .main-block .board__grid .hit:hover {
+  background-color: #9ba4b5 !important;
+}
+#main .main-block .board__grid .hit-player::after {
+  content: "✖";
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#main .main-block .board__grid .disable-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 6;
+  pointer-events: none;
 }
 #main .main-block.player {
   justify-content: flex-end;
 }
 #main .main-block.player .controls {
-  align-self: flex-start;
+  align-self: center;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -99,20 +144,36 @@
   gap: 8px;
   width: 100%;
 }
-#main .main-block.player .controls .buttons-wrap__button {
+#main .main-block.player .controls button {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
   border: none;
   outline: none;
-  background-color: #9ba4b5;
+  background-color: #394867;
   color: #f1f6f9;
   padding: 6px;
   transition: all 0.1s ease;
+  border: 1px solid #394867;
 }
-#main .main-block.player .controls .buttons-wrap__button:hover {
-  background-color: #394867;
+#main .main-block.player .controls button:hover {
+  background-color: #f1f6f9;
+  color: #394867;
   cursor: pointer;
+}
+#main .main-block.player .controls .disabled-button {
+  cursor: not-allowed;
+  background-color: #9ba4b5;
+  border: 1px solid #9ba4b5;
+  color: #f1f6f9;
+}
+#main .main-block.player .controls .restart-button {
+  position: absolute;
+  visibility: hidden;
+}
+#main .main-block.player .controls .enabled-button {
+  position: static;
+  visibility: visible;
 }
 
 .main-block.computer {
@@ -144,6 +205,14 @@
 
 .ship[data-ishorizontal=false] {
   flex-direction: column;
+}
+
+.draggable-off {
+  pointer-events: none !important;
+}
+
+.hide-element {
+  display: none !important;
 }
 
 body {

@@ -1,4 +1,14 @@
 @import './variables';
+
+@mixin hit-cell {
+  content: '✖';
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 #main {
   width: 100%;
   display: flex;
@@ -22,6 +32,7 @@
       // flex: 1;
 
       &__grid {
+        position: relative;
         border: 1px solid $the-darkest;
         background-color: $the-darkest;
         height: 300px;
@@ -35,9 +46,52 @@
           background-color: $bg-color;
           position: relative;
           transition: all 0.1s ease;
+          text-align: center;
         }
-        .cell-hit {
+        .cell-hover {
           background-color: $light-gray;
+        }
+
+        .missed {
+          &::after {
+            content: '•';
+            font-size: 26px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+
+          &:hover {
+            background-color: $bg-color !important;
+          }
+        }
+
+        .hit {
+          background-color: $light-gray;
+          &::after {
+            @include hit-cell();
+          }
+
+          &:hover {
+            background-color: $light-gray !important;
+          }
+        }
+
+        .hit-player {
+          &::after {
+            @include hit-cell();
+          }
+        }
+
+        .disable-grid {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 6;
+          pointer-events: none;
         }
       }
     }
@@ -47,7 +101,7 @@
     justify-content: flex-end;
 
     .controls {
-      align-self: flex-start;
+      align-self: center;
       // flex: 1;
       height: 100%;
       display: flex;
@@ -109,22 +163,43 @@
           flex-direction: column;
           gap: 8px;
           width: 100%;
-
-          &__button {
-            appearance: none;
-            border: none;
-            outline: none;
-            background-color: $light-gray;
-            color: $bg-color;
-            padding: 6px;
-            transition: all 0.1s ease;
-
-            &:hover {
-              background-color: $the-darkest;
-              cursor: pointer;
-            }
-          }
         }
+      }
+
+      button {
+        appearance: none;
+        border: none;
+        outline: none;
+        background-color: $the-darkest;
+        color: $bg-color;
+        padding: 6px;
+        transition: all 0.1s ease;
+        border: 1px solid $the-darkest;
+
+        &:hover {
+          background-color: $bg-color;
+
+          color: $the-darkest;
+          cursor: pointer;
+        }
+      }
+
+      .disabled-button {
+        cursor: not-allowed;
+        background-color: $light-gray;
+        border: 1px solid $light-gray;
+
+        color: $bg-color;
+      }
+
+      .restart-button {
+        position: absolute;
+        visibility: hidden;
+      }
+
+      .enabled-button {
+        position: static;
+        visibility: visible;
       }
     }
   }
@@ -147,27 +222,16 @@
 
 .ship {
   display: flex;
-  // display: grid;
-  // grid-template-columns: repeat(4, 1fr);
   position: absolute;
-  // margin: -2px;
-  // background-color: rgb(57, 72, 103, 0.5);
-  // border: 1px solid $mid-gray;
   z-index: 3;
   box-sizing: border-box;
   transform-origin: top left;
   transition: all 0.1s ease;
-  // width: fit-content;
-  // height: fit-content;
 
   &__cell {
     min-width: 30px;
     min-height: 30px;
-    // z-index: 6;
     flex: 1;
-    // border: 1px solid red;
-    // border-bottom: 3px solid red;
-    // box-sizing: border-box;
     background-color: rgb(57, 72, 103, 0.5);
     pointer-events: none;
   }
@@ -179,4 +243,12 @@
 
 .ship[data-ishorizontal='false'] {
   flex-direction: column;
+}
+
+.draggable-off {
+  pointer-events: none !important;
+}
+
+.hide-element {
+  display: none !important;
 }

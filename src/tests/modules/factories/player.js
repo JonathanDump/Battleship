@@ -30,7 +30,7 @@ export function Player(name) {
       if (!this.attack(gameboard, coords)) {
         this.randomAttack(gameboard);
       }
-      return;
+      return coords;
     },
   };
 }
