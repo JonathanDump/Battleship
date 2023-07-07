@@ -5,5 +5,173 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Battleship</title>
   <script defer src="index.js"></script></head>
-  <body></body>
+  <body>
+    <div id="app" class="app">
+      <div id="header" class="header">
+        <div class="logo">BATTLESHIP</div>
+      </div>
+      <div id="main" class="main">
+        <div class="main-block player">
+          <div class="controls">
+            <div class="instruction">
+              Drag to place a ship <br />and click to rotate
+            </div>
+            <div class="port">
+              <div class="dock d4" data-amount="x1">
+                <div
+                  class="ship s4"
+                  draggable="true"
+                  data-length="4"
+                  data-index="1"
+                  data-ishorizontal="true"
+                >
+                  <div class="ship__cell"></div>
+                  <div class="ship__cell"></div>
+                  <div class="ship__cell"></div>
+                  <div class="ship__cell"></div>
+                </div>
+              </div>
+              <div class="dock d3" data-amount="x2">
+                <div
+                  class="ship s3"
+                  draggable="true"
+                  data-length="3"
+                  data-index="1"
+                  data-ishorizontal="true"
+                >
+                  <div class="ship__cell"></div>
+                  <div class="ship__cell"></div>
+                  <div class="ship__cell"></div>
+                </div>
+                <div
+                  class="ship s3"
+                  draggable="true"
+                  data-length="3"
+                  data-index="2"
+                  data-ishorizontal="true"
+                >
+                  <div class="ship__cell"></div>
+                  <div class="ship__cell"></div>
+                  <div class="ship__cell"></div>
+                </div>
+              </div>
+              <div class="dock d2" data-amount="x3">
+                <div
+                  class="ship s2"
+                  draggable="true"
+                  data-length="2"
+                  data-index="1"
+                  data-ishorizontal="true"
+                >
+                  <div class="ship__cell"></div>
+                  <div class="ship__cell"></div>
+                </div>
+                <div
+                  class="ship s2"
+                  draggable="true"
+                  data-length="2"
+                  data-index="2"
+                  data-ishorizontal="true"
+                >
+                  <div class="ship__cell"></div>
+                  <div class="ship__cell"></div>
+                </div>
+                <div
+                  class="ship s2"
+                  draggable="true"
+                  data-length="2"
+                  data-index="3"
+                  data-ishorizontal="true"
+                >
+                  <div class="ship__cell"></div>
+                  <div class="ship__cell"></div>
+                </div>
+              </div>
+              <div class="dock d1" data-amount="x4">
+                <div
+                  class="ship s1"
+                  draggable="true"
+                  data-length="1"
+                  data-index="1"
+                >
+                  <div class="ship__cell"></div>
+                </div>
+                <div
+                  class="ship s1"
+                  draggable="true"
+                  data-length="1"
+                  data-index="2"
+                >
+                  <div class="ship__cell"></div>
+                </div>
+                <div
+                  class="ship s1"
+                  draggable="true"
+                  data-length="1"
+                  data-index="3"
+                >
+                  <div class="ship__cell"></div>
+                </div>
+                <div
+                  class="ship s1"
+                  draggable="true"
+                  data-length="1"
+                  data-index="4"
+                >
+                  <div class="ship__cell"></div>
+                </div>
+              </div>
+            </div>
+            <div class="buttons">
+              <div class="buttons-wrap">
+                <button
+                  class="buttons-wrap__button"
+                  type="button"
+                  id="reset-button"
+                >
+                  Reset ships
+                </button>
+                <button
+                  class="buttons-wrap__button"
+                  type="button"
+                  id="random-button"
+                >
+                  Random
+                </button>
+                <button
+                  class="buttons-wrap__button disabled-button"
+                  type="button"
+                  id="start-button"
+                >
+                  Start game
+                </button>
+              </div>
+            </div>
+            <button class="restart-button" type="button">Restart</button>
+          </div>
+          <div class="board">
+            <div class="board__grid" id="grid-player"></div>
+            <div class="board__label">Your grid</div>
+          </div>
+          <div></div>
+        </div>
+        <div class="main-block computer">
+          <div class="board">
+            <div class="board__grid" id="grid-computer"></div>
+            <div class="board__label">Computer's grid</div>
+          </div>
+        </div>
+      </div>
+      <div id="footer" class="footer">
+        <a href="https://github.com/JonathanDump" class="github"
+          >Made by Jonathan Dump </a
+        ><img src="assets/github .svg" alt="" />
+      </div>
+    </div>
+    <div class="game-over-bg"></div>
+    <div class="game-over">
+      <div class="game-over__winner">The winner is computer</div>
+      <button type="button" class="game-over__play-again">Play again</button>
+    </div>
+  </body>
 </html>
